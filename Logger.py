@@ -16,5 +16,5 @@ class Logger:
         print(f"[{datetime.now()}] [ERROR] {message}", file=self.error_stream)
 
     def debug(self, message):
-        if self.debug_mode:
+        if self.debug_mode == "True":
             print(f"[{datetime.now()}] [DEBUG] {message}", file=self.debug_stream)

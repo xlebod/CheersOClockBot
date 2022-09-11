@@ -1,19 +1,22 @@
 import time
 from datetime import datetime, timedelta
+
 from CheersOClockRuntimeError import CheersOClockRuntimeError
 
 
 class CheersOClockBot:
-    def __init__(self, config, logger, message_api, token_handler, osc_handler):
+    def __init__(self, config, logger, message_api, token_handler, osc_handler, crypto_service):
         self.logger = logger
         self.message_api = message_api
         self.token_handler = token_handler
         self.osc_handler = osc_handler
         self.config = config
+        self.crypto_service = crypto_service
 
     def do_loop(self, shot_datetime, shot_frequency):
         self.osc_handler.trigger_osc_bool(self.config.parameter_name)
         seconds_to_sleep = (shot_datetime - datetime.now(shot_datetime.tzinfo)).total_seconds()
+        self.logger.log(f"Next signal will be sent at {shot_datetime}")
         self.logger.debug(f"Going to sleep for '{seconds_to_sleep}' seconds")
         time.sleep(seconds_to_sleep)
         shot_datetime = self.get_next_datetime(shot_datetime, shot_frequency)
@@ -72,7 +75,6 @@ class CheersOClockBot:
         except CheersOClockRuntimeError as e:
             if e.message:
                 self.logger.error(e.message)
-        finally:
-            time.sleep(0.5)
-            self.logger.log("Waiting for input before closing!")
-            input()
+        time.sleep(0.5)
+        self.logger.log("Waiting for input before closing!")
+        input()
