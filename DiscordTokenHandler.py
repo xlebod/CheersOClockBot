@@ -1,7 +1,8 @@
-from CheersOClockRuntimeError import CheersOClockRuntimeError
-from Platforms import Platforms
 import os
 import re
+
+from CheersOClockRuntimeError import CheersOClockRuntimeError
+from Platforms import Platforms
 
 
 class DiscordTokenHandler:
@@ -24,29 +25,24 @@ class DiscordTokenHandler:
                     for token in re.findall(regex, line):
                         tokens.append(token)
 
-        if len(tokens) <= 0:
-            raise CheersOClockRuntimeError("No viable tokens found!")
-
         self.logger.debug(f"Got tokens: {tokens}")
-
         return tokens
 
     def get_token(self):
         tokens = self.find_tokens()
+        for token in tokens:
+            self.logger.debug(f"Trying validity of token {token}")
+            if self.check_token_authority(token):
+                self.logger.debug(f"Token is valid")
+                return token
+            self.logger.debug(f"Token is invalid")
 
-        if len(tokens) > 1:
-            self.logger.log("Found multiple tokens! Please choose the appropriate one")
-            while True:
-                for count, token in enumerate(tokens):
-                    self.logger.log(f"[{count}] {token}")
-                user_input = input("Choose a token to use:")
-                if user_input.isnumeric():
-                    return tokens[int(user_input)]
-                self.logger.log("Input was not a number!")
-
-        return tokens[0]
+        raise CheersOClockRuntimeError("Found no valid tokens!")
 
     def check_token_authority(self, token):
-        if self.message_api.get_request(token).status_code == 401:
+        headers = {
+            'authorization': token
+        }
+        if self.message_api.get_request(headers).status_code == 401:
             return False
         return True
