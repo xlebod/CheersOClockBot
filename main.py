@@ -8,7 +8,7 @@ import time
 
 PLATFORM = 'Discord'
 CHANNEL_ID = FILL_THIS_IN
-MESSAGE_API = f"https://discord.com/api/v9/channels/{CHANNEL_ID}/messages?limit=100"
+MESSAGE_API = f"https://discord.com/api/v9/channels/{CHANNEL_ID}/messages?limit=50"
 DRINKIES_FREQUENCY = 1
 START_MESSAGE = f"Heya! Time to start drinking! Shots every {DRINKIES_FREQUENCY} minutes? Sounds good to me!"
 DEBUG_MODE = True
