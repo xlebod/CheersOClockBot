@@ -16,7 +16,7 @@ class Config:
         self.debug_mode = bot_config["debug_mode"]
         self.start_message = f"Heya! Time to start drinking! Shots every {self.drinkies_frequency} minutes? " \
                              f"Sounds good to me!"
-        self.message_api_endpoint = f"https://discord.com/api/v9/channels/{self.channel_id}/messages?limit=50"
+        self.message_api_endpoint = f"https://discord.com/api/v9/channels/{self.channel_id}/messages"
 
     @staticmethod
     def add_to_config(key, value, path_to_ini_file="./config.ini"):

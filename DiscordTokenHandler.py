@@ -51,7 +51,7 @@ class DiscordTokenHandler:
         headers = {
             'authorization': token
         }
-        if self.message_api.get_request(headers).status_code == 401:
+        if self.message_api.get_request(headers, "?limit=1").status_code == 401:
             self.logger.debug(f"Token is invalid")
             return False
 

@@ -1,6 +1,8 @@
-from CheersOClockRuntimeError import CheersOClockRuntimeError
-import requests
 import json
+
+import requests
+
+from CheersOClockRuntimeError import CheersOClockRuntimeError
 
 
 class DiscordMessageApiHandler:
@@ -21,8 +23,8 @@ class DiscordMessageApiHandler:
                 raise CheersOClockRuntimeError(f"Failed to load messages after {counter} retries")
         return r
 
-    def get_request(self, headers):
-        r = requests.get(self.config.message_api_endpoint, headers=headers)
+    def get_request(self, headers, variables='?limit=50'):
+        r = requests.get(self.config.message_api_endpoint + variables, headers=headers)
         return r
 
     def get_messages(self, token):
