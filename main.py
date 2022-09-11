@@ -5,9 +5,11 @@ from datetime import datetime, timedelta
 import os
 import re
 import time
+import VRC_OSCLib
 
 PLATFORM = 'Discord'
 CHANNEL_ID = FILL_THIS_IN
+PARAMETER_NAME = FILL_THIS_IN
 MESSAGE_API = f"https://discord.com/api/v9/channels/{CHANNEL_ID}/messages?limit=50"
 DRINKIES_FREQUENCY = 1
 START_MESSAGE = f"Heya! Time to start drinking! Shots every {DRINKIES_FREQUENCY} minutes? Sounds good to me!"
@@ -17,7 +19,7 @@ DEBUG_MODE = True
 class Logger:
     @staticmethod
     def log(message):
-        print(f"{[{datetime.now()}]} {message}  ")
+        print(message)
 
     @staticmethod
     def error(message):
@@ -27,6 +29,7 @@ class Logger:
     def debug(message):
         if DEBUG_MODE:
             print(f"[{datetime.now()}] [DEBUG] {message}")
+
 
 class Platforms:
     @staticmethod
@@ -60,17 +63,20 @@ def find_token():
     return tokens
 
 
-def trigger_osc():
+def trigger_osc_bool(parameter):
     Logger.debug("Sending OSC signal to VRC")
+    VRC_OSCLib.Bool(True, f"/avatar/parameters/{parameter}", "127.0.0.1", 9000)
+    Logger.debug("OSC signal sent")
 
 
 def do_loop(shot_datetime, shot_frequency):
-    trigger_osc()
+    trigger_osc_bool(PARAMETER_NAME)
     seconds_to_sleep = (shot_datetime - datetime.now(shot_datetime.tzinfo)).total_seconds()
     Logger.debug(f"Going to sleep for '{seconds_to_sleep}' seconds")
     time.sleep(seconds_to_sleep)
     shot_datetime = get_next_datetime(shot_datetime, shot_frequency)
     do_loop(shot_datetime, shot_frequency)
+
 
 def join_party(token):
     Logger.debug("Joining party")
@@ -81,7 +87,6 @@ def join_party(token):
     next_shot_datetime = get_shot_datetime(message["timestamp"], shot_frequency)
     Logger.debug(f"Got start time for shots {next_shot_datetime}")
     do_loop(next_shot_datetime, shot_frequency)
-
 
 
 def get_next_datetime(datetime_obj, shot_frequency):
