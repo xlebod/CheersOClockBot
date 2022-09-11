@@ -1,9 +1,10 @@
-from Logger import Logger
-from DiscordMessageApiHandler import DiscordMessageApiHandler
-from DiscordTokenHandler import DiscordTokenHandler
-from OscHandler import OscHandler
 from CheersOClockBot import CheersOClockBot
 from Config import Config
+from DiscordMessageApiHandler import DiscordMessageApiHandler
+from DiscordTokenHandler import DiscordTokenHandler
+from Logger import Logger
+from OscHandler import OscHandler
+
 
 def main():
     config = Config()
