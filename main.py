@@ -1,10 +1,12 @@
 import json
-import sys
-import requests
-from datetime import datetime, timedelta
 import os
 import re
+import sys
 import time
+from datetime import datetime, timedelta
+
+import requests
+
 import VRC_OSCLib
 
 PLATFORM = 'Discord'
@@ -190,4 +192,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
