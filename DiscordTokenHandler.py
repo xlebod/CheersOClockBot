@@ -45,6 +45,7 @@ class DiscordTokenHandler:
 
         token = self.get_token_from_user()
         self.save_default_token(token)
+        return token
 
     def check_token_authority(self, token):
         self.logger.debug(f"Trying validity of token {token}")
